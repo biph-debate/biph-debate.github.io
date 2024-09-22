@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Forum Debate Flow and Scoring</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 1400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: none;
+            min-height: 100px;
+            position: relative;
+            padding-top: 25px;
+            box-sizing: border-box;
+        }
+        textarea::before {
+            content: attr(data-number);
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            font-weight: bold;
+            color: #666;
+        }
+        input[type="text"], input[type="number"] {
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        input[type="number"] {
+            width: 60px;
+        }
+        label {
+            display: inline-block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #totalScore {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .flow-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+        .flow-column {
+            width: 24%;
+            min-width: 200px;
+        }
+        .contention {
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .add-contention {
+            background-color: #008CBA;
+        }
+        .add-contention:hover {
+            background-color: #007B9A;
+        }
+        .pro-argument {
+            background-color: #e6f3ff;
+        }
+        .con-argument {
+            background-color: #fff0f0;
+        }
+        .tab {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .tab button {
+            background-color: inherit;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 16px;
+            color: black;
+        }
+        .tab button:hover {
+            opacity: 0.8;
+        }
+        .tab button.active {
+            font-weight: bold;
+        }
+        .pro-tab {
+            background-color: #e6f3ff;
+        }
+        .con-tab {
+            background-color: #fff0f0;
+        }
+        .word-count {
+            text-align: right;
+            font-style: italic;
+            color: #666;
+        }
+        .timer-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .timer {
+            text-align: center;
+            margin: 5px;
+            padding: 5px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+        }
+        .timer button {
+            font-size: 12px;
+            padding: 5px 10px;
+        }
+        .pro-timer {
+            background-color: #e6f3ff;
+            color: black;
+        }
+        .con-timer {
+            background-color: #fff0f0;
+            color: black;
+        }
+        .speakers {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .speaker-input {
+            width: 45%;
+        }
+        .speaker-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .speaker-row input[type="text"] {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Public Forum Debate Flow and Scoring</h1>
+        
+        <div class="speakers">
+            <div class="speaker-input">
+                <h3>PRO Speakers</h3>
+                <div class="speaker-row">
+                    <input type="text" id="proSpeaker1" placeholder="PRO Speaker 1">
+                    <label for="proScore1">Score (25-30):</label>
+                    <input type="number" id="proScore1" name="proScore1" min="25" max="30" required>
+                </div>
+                <div class="speaker-row">
+                    <input type="text" id="proSpeaker2" placeholder="PRO Speaker 2">
+                    <label for="proScore2">Score (25-30):</label>
+                    <input type="number" id="proScore2" name="proScore2" min="25" max="30" required>
+                </div>
+            </div>
+            <div class="speaker-input">
+                <h3>CON Speakers</h3>
+                <div class="speaker-row">
+                    <input type="text" id="conSpeaker1" placeholder="CON Speaker 1">
+                    <label for="conScore1">Score (25-30):</label>
+                    <input type="number" id="conScore1" name="conScore1" min="25" max="30" required>
+                </div>
+                <div class="speaker-row">
+                    <input type="text" id="conSpeaker2" placeholder="CON Speaker 2">
+                    <label for="conScore2">Score (25-30):</label>
+                    <input type="number" id="conScore2" name="conScore2" min="25" max="30" required>
+                </div>
+            </div>
+        </div>
+        
+        <div class="timer-container">
+            <div class="timer pro-timer">
+                <h3>PRO Prep</h3>
+                <div id="proPrep">3:00</div>
+                <button onclick="startTimer('proPrep', 180)">Start/Pause</button>
+                <button onclick="resetTimer('proPrep', 180)">Reset</button>
+            </div>
+            <div class="timer con-timer">
+                <h3>CON Prep</h3>
+                <div id="conPrep">3:00</div>
+                <button onclick="startTimer('conPrep', 180)">Start/Pause</button>
+                <button onclick="resetTimer('conPrep', 180)">Reset</button>
+            </div>
+        </div>
+
+        <div class="timer-container">
+            <div class="timer">
+                <h3>Constructive</h3>
+                <div id="constructive">4:00</div>
+                <button onclick="startTimer('constructive', 240)">Start/Pause</button>
+                <button onclick="resetTimer('constructive', 240)">Reset</button>
+            </div>
+            <div class="timer">
+                <h3>Crossfire</h3>
+                <div id="crossfire1">3:00</div>
+                <button onclick="startTimer('crossfire1', 180)">Start/Pause</button>
+                <button onclick="resetTimer('crossfire1', 180)">Reset</button>
+            </div>
+            <div class="timer">
+                <h3>Rebuttal</h3>
+                <div id="rebuttal">4:00</div>
+                <button onclick="startTimer('rebuttal', 240)">Start/Pause</button>
+                <button onclick="resetTimer('rebuttal', 240)">Reset</button>
+            </div>
+            <div class="timer">
+                <h3>Crossfire</h3>
+                <div id="crossfire2">3:00</div>
+                <button onclick="startTimer('crossfire2', 180)">Start/Pause</button>
+                <button onclick="resetTimer('crossfire2', 180)">Reset</button>
+            </div>
+            <div class="timer">
+                <h3>Summary</h3>
+                <div id="summary">3:00</div>
+                <button onclick="startTimer('summary', 180)">Start/Pause</button>
+                <button onclick="resetTimer('summary', 180)">Reset</button>
+            </div>
+            <div class="timer">
+                <h3>Grand Crossfire</h3>
+                <div id="grandCrossfire">3:00</div>
+                <button onclick="startTimer('grandCrossfire', 180)">Start/Pause</button>
+                <button onclick="resetTimer('grandCrossfire', 180)">Reset</button>
+            </div>
+            <div class="timer">
+                <h3>Final Focus</h3>
+                <div id="finalFocus">2:00</div>
+                <button onclick="startTimer('finalFocus', 120)">Start/Pause</button>
+                <button onclick="resetTimer('finalFocus', 120)">Reset</button>
+            </div>
+        </div>
+
+        <div class="tab">
+            <button class="tablinks pro-tab active" onclick="switchOrder('pro')">PRO First</button>
+            <button class="tablinks con-tab" onclick="switchOrder('con')">CON First</button>
+        </div>
+
+        <form id="debateForm">
+            <div class="flow-container" id="flowContainer">
+                <!-- Flow columns will be dynamically inserted here -->
+            </div>
+            
+            <button type="button" class="add-contention" onclick="addContention()">Add Contention</button>
+            
+            <h2>Feedback</h2>
+            <div>
+                <h3>RFD (Reason for Decision)</h3>
+                <div class="word-count" id="rfdWordCount">Word count: 0</div>
+                <textarea id="rfd" rows="4" oninput="updateWordCount('rfd')"></textarea>
+            </div>
+            <div>
+                <h3>Feedback for PRO</h3>
+                <div class="word-count" id="proFeedbackWordCount">Word count: 0</div>
+                <textarea id="proFeedback" rows="4" oninput="updateWordCount('proFeedback')"></textarea>
+            </div>
+            <div>
+                <h3>Feedback for CON</h3>
+                <div class="word-count" id="conFeedbackWordCount">Word count: 0</div>
+                <textarea id="conFeedback" rows="4" oninput="updateWordCount('conFeedback')"></textarea>
+            </div>
+        </form>
+        
+        <div id="totalScore"></div>
+    </div>
+
+    <script>
+        let currentOrder = 'pro';
+        let contentionCount = 4;
+
+        function switchOrder(order) {
+            currentOrder = order;
+            document.querySelectorAll('.tablinks').forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            updateFlow();
+        }
+
+        function updateFlow() {
+            const flowContainer = document.getElementById('flowContainer');
+            flowContainer.innerHTML = '';
+            const columns = ['Constructive', 'Rebuttal', 'Summary', 'Final Focus'];
+            
+            columns.forEach((column, index) => {
+                const div = document.createElement('div');
+                div.className = 'flow-column';
+                div.innerHTML = `<h2>${column}</h2>`;
+                
+                for (let i = 0; i < contentionCount; i++) {
+                    const textarea = document.createElement('textarea');
+                    textarea.rows = 6;
+                    if (currentOrder === 'pro') {
+                        textarea.className = index % 2 === 0 ? 'pro-argument' : 'con-argument';
+                    } else {
+                        textarea.className = index % 2 === 0 ? 'con-argument' : 'pro-argument';
+                    }
+                    textarea.placeholder = `${textarea.className.split('-')[0].toUpperCase()} ${column}`;
+                    textarea.dataset.number = i + 1;
+                    textarea.oninput = adjustHeight;
+                    div.appendChild(textarea);
+                }
+                
+                flowContainer.appendChild(div);
+            });
+        }
+
+        function adjustHeight() {
+            this.style.height = 'auto';
+            this.style.height = this.scrollHeight + 'px';
+            const row = Math.floor([...this.parentNode.children].indexOf(this) - 1);
+            const textareas = document.querySelectorAll(`.flow-column textarea:nth-of-type(${row + 1})`);
+            const maxHeight = Math.max(...Array.from(textareas).map(t => t.scrollHeight));
+            textareas.forEach(t => t.style.height = maxHeight + 'px');
+        }
+
+        function addContention() {
+            contentionCount++;
+            updateFlow();
+        }
+
+        function updateWordCount(id) {
+            const text = document.getElementById(id).value;
+            const wordCount = text.trim().split(/\s+/).length;
+            document.getElementById(`${id}WordCount`).textContent = `Word count: ${wordCount}`;
+        }
+
+        function startTimer(id, duration) {
+            const timerElement = document.getElementById(id);
+            let timer = duration;
+            let intervalId = timerElement.intervalId;
+
+            if (intervalId) {
+                clearInterval(intervalId);
+                timerElement.intervalId = null;
+            } else {
+                intervalId = setInterval(() => {
+                    const minutes = parseInt(timer / 60, 10);
+                    const seconds = parseInt(timer % 60, 10);
+
+                    timerElement.textContent = minutes.toString().padStart(2, '0') + ':' + 
+                                               seconds.toString().padStart(2, '0');
+
+                    if (--timer < 0) {
+                        clearInterval(intervalId);
+                        timerElement.textContent = '00:00';
+                    }
+                }, 1000);
+                timerElement.intervalId = intervalId;
+            }
+        }
+
+        function resetTimer(id, duration) {
+            const timerElement = document.getElementById(id);
+            clearInterval(timerElement.intervalId);
+            timerElement.intervalId = null;
+            const minutes = parseInt(duration / 60, 10);
+            const seconds = parseInt(duration % 60, 10);
+            timerElement.textContent = minutes.toString().padStart(2, '0') + ':' + 
+                                       seconds.toString().padStart(2, '0');
+        }
+
+        // Initialize the flow
+        updateFlow();
+
+        // Add event listeners to update flow when window is resized
+        window.addEventListener('resize', updateFlow);
+    </script>
+</body>
+</html>
