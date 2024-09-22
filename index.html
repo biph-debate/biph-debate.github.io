@@ -20,8 +20,38 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-        h1, h2, h3 {
-            color: #333;
+
+        h1 {
+            color: #000000;
+            margin-top: 0;
+            margin-bottom: 10;
+            text-align: center;
+        }
+        h2 {
+            color: #000000;
+            font-family: 'Verdana', serif;
+            font-weight: normal;
+            text-align: center;
+            margin-top: -30px;
+            margin-bottom: 0;
+        }
+        h3 {
+            color: #000000;
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 0px;
+        }
+        h4 {
+            color: #000000;
+            font-size: larger;
+            text-align: left;
+            margin-bottom: 5px;
+        }
+        h5 {
+            margin-top: 10px;
+            margin-bottom: -15px;
+            color: #000000;
+            text-align: center;
         }
         textarea {
             width: 100%;
@@ -54,27 +84,13 @@
         }
         label {
             display: inline-block;
-            margin-bottom: 5px;
+            font-size: small;
+            margin-left: 2px;
+            margin-bottom: 4px;
             font-weight: bold;
+            margin-top: 5px;
         }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-right: 10px;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        #totalScore {
-            font-size: 18px;
-            font-weight: bold;
-            margin-top: 20px;
-        }
+
         .flow-container {
             display: flex;
             justify-content: space-between;
@@ -93,6 +109,8 @@
         }
         .add-contention {
             background-color: #008CBA;
+            display: block;
+            margin: 20px auto;
         }
         .add-contention:hover {
             background-color: #007B9A;
@@ -103,33 +121,8 @@
         .con-argument {
             background-color: #fff0f0;
         }
-        .tab {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .tab button {
-            background-color: inherit;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            padding: 14px 16px;
-            transition: 0.3s;
-            font-size: 16px;
-            color: black;
-        }
-        .tab button:hover {
-            opacity: 0.8;
-        }
-        .tab button.active {
-            font-weight: bold;
-        }
-        .pro-tab {
-            background-color: #e6f3ff;
-        }
-        .con-tab {
-            background-color: #fff0f0;
-        }
         .word-count {
+            margin-top: -20px;
             text-align: right;
             font-style: italic;
             color: #666;
@@ -143,20 +136,38 @@
         .timer {
             text-align: center;
             margin: 5px;
-            padding: 5px;
+            padding: 10px;
             background-color: #f0f0f0;
             border-radius: 4px;
         }
+
         .timer button {
+            margin-right: 0px;
+            margin-left: 5px;
+            margin-bottom: 5px;
             font-size: 12px;
             padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .timer button:hover {
+            background-color: #0056b3;
+        }
+
+        .timer button.toggled {
+            background-color: #28a745;
         }
         .pro-timer {
-            background-color: #e6f3ff;
+            background-color: #e1f0ff;
             color: black;
         }
         .con-timer {
-            background-color: #fff0f0;
+            background-color: #fde7e7;
             color: black;
         }
         .speakers {
@@ -169,22 +180,92 @@
         }
         .speaker-row {
             display: flex;
-            align-items: center;
-            margin-bottom: 10px;
+            flex-direction: column;
+            margin-bottom: 20px;
         }
         .speaker-row input[type="text"] {
-            flex-grow: 1;
-            margin-right: 10px;
+            margin-bottom: 5px;
         }
+        .flow-section {
+            margin-bottom: 30px;
+        }
+        .flow-section h3 {
+            text-align: left;
+            margin-bottom: 10px;
+        }
+
+        .cell-wrapper {
+        position: relative;
+        margin-bottom: 10px;
+    }
+
+    .contention-label {
+        position: absolute;
+        top: 5px;
+        left: 8px;
+        font-size: 0.8em;
+        opacity: 0.5;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .argument-textarea {
+        width: 100%;
+        padding-top: 25px;
+        box-sizing: border-box;
+    }
+
+    .pro-argument {
+        background-color: #e6f3ff;
+    }
+
+    .con-argument {
+        background-color: #fff0f0;
+    }
+
+    .coin {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f5c518, #d4a10f); /* Gradient for realistic coin */
+            border: 2px solid #b8860b; /* Thinner border */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 10px;
+            transition: transform 0.5s;
+            perspective: 1000px; /* Added perspective for better flipping effect */
+            cursor: pointer; /* Change cursor to pointer */
+        }
+        .flip {
+            animation: flip 0.6s ease forwards; /* Faster flip animation */
+        }
+        @keyframes flip {
+            0% { transform: rotateX(0); }
+            25% { transform: rotateX(180deg); }
+            50% { transform: rotateX(360deg); }
+            75% { transform: rotateX(540deg); }
+            100% { transform: rotateX(720deg); }
+        }
+        .fade {
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Public Forum Debate Flow and Scoring</h1>
+        <h1>Public Forum Debate</h1>
+        <h2>Flow and Scoring</h2>
         
         <div class="speakers">
             <div class="speaker-input">
-                <h3>PRO Speakers</h3>
+                <h4>PRO Speakers</h4>
                 <div class="speaker-row">
                     <input type="text" id="proSpeaker1" placeholder="PRO Speaker 1">
                     <label for="proScore1">Score (25-30):</label>
@@ -197,7 +278,7 @@
                 </div>
             </div>
             <div class="speaker-input">
-                <h3>CON Speakers</h3>
+                <h4>CON Speakers</h4>
                 <div class="speaker-row">
                     <input type="text" id="conSpeaker1" placeholder="CON Speaker 1">
                     <label for="conScore1">Score (25-30):</label>
@@ -211,137 +292,190 @@
             </div>
         </div>
         
+       <div class="timer-container">
+        <div class="timer pro-timer">
+            <h5>PRO</h5>
+            <h3>Prep</h3>
+            <div id="proPrep">3:00</div>
+            <button onclick="toggleTimer('proPrep', 180)">Start</button>
+            <button onclick="resetTimer('proPrep', 180)">Reset</button>
+        </div>
+
+        <div class="coin" id="coin">Coin Flip</div>
+
+        <div class="timer con-timer">
+            <h5>CON</h5>
+            <h3>Prep</h3>
+            <div id="conPrep">3:00</div>
+            <button onclick="toggleTimer('conPrep', 180)">Start</button>
+            <button onclick="resetTimer('conPrep', 180)">Reset</button>
+        </div>
+    </div>
+
         <div class="timer-container">
             <div class="timer pro-timer">
-                <h3>PRO Prep</h3>
-                <div id="proPrep">3:00</div>
-                <button onclick="startTimer('proPrep', 180)">Start/Pause</button>
-                <button onclick="resetTimer('proPrep', 180)">Reset</button>
+                <h5>PRO</h5>
+                <h3>Constructive</h3>
+                <div id="proConstructive">4:00</div>
+                <button onclick="toggleTimer('proConstructive', 240)">Start</button>
+                <button onclick="resetTimer('proConstructive', 240)">Reset</button>
             </div>
             <div class="timer con-timer">
-                <h3>CON Prep</h3>
-                <div id="conPrep">3:00</div>
-                <button onclick="startTimer('conPrep', 180)">Start/Pause</button>
-                <button onclick="resetTimer('conPrep', 180)">Reset</button>
-            </div>
-        </div>
-
-        <div class="timer-container">
-            <div class="timer">
+                <h5>CON</h5>
                 <h3>Constructive</h3>
-                <div id="constructive">4:00</div>
-                <button onclick="startTimer('constructive', 240)">Start/Pause</button>
-                <button onclick="resetTimer('constructive', 240)">Reset</button>
+                <div id="conConstructive">4:00</div>
+                <button onclick="toggleTimer('conConstructive', 240)">Start</button>
+                <button onclick="resetTimer('conConstructive', 240)">Reset</button>
             </div>
             <div class="timer">
+                <h5>1st</h5>
                 <h3>Crossfire</h3>
                 <div id="crossfire1">3:00</div>
-                <button onclick="startTimer('crossfire1', 180)">Start/Pause</button>
+                <button onclick="toggleTimer('crossfire1', 180)">Start</button>
                 <button onclick="resetTimer('crossfire1', 180)">Reset</button>
             </div>
-            <div class="timer">
+            <div class="timer pro-timer">
+                <h5>PRO</h5>
                 <h3>Rebuttal</h3>
-                <div id="rebuttal">4:00</div>
-                <button onclick="startTimer('rebuttal', 240)">Start/Pause</button>
-                <button onclick="resetTimer('rebuttal', 240)">Reset</button>
+                <div id="proRebuttal">4:00</div>
+                <button onclick="toggleTimer('proRebuttal', 240)">Start</button>
+                <button onclick="resetTimer('proRebuttal', 240)">Reset</button>
+            </div>
+            <div class="timer con-timer">
+                <h5>CON</h5>
+                <h3>Rebuttal</h3>
+                <div id="conRebuttal">4:00</div>
+                <button onclick="toggleTimer('conRebuttal', 240)">Start</button>
+                <button onclick="resetTimer('conRebuttal', 240)">Reset</button>
             </div>
             <div class="timer">
+                <h5>2nd</h5>
                 <h3>Crossfire</h3>
                 <div id="crossfire2">3:00</div>
-                <button onclick="startTimer('crossfire2', 180)">Start/Pause</button>
+                <button onclick="toggleTimer('crossfire2', 180)">Start</button>
                 <button onclick="resetTimer('crossfire2', 180)">Reset</button>
             </div>
-            <div class="timer">
+            <div class="timer pro-timer">
+                <h5>PRO</h5>
                 <h3>Summary</h3>
-                <div id="summary">3:00</div>
-                <button onclick="startTimer('summary', 180)">Start/Pause</button>
-                <button onclick="resetTimer('summary', 180)">Reset</button>
+                <div id="proSummary">3:00</div>
+                <button onclick="toggleTimer('proSummary', 180)">Start</button>
+                <button onclick="resetTimer('proSummary', 180)">Reset</button>
+            </div>
+            <div class="timer con-timer">
+                <h5>CON</h5>
+                <h3>Summary</h3>
+                <div id="conSummary">3:00</div>
+                <button onclick="toggleTimer('conSummary', 180)">Start</button>
+                <button onclick="resetTimer('conSummary', 180)">Reset</button>
             </div>
             <div class="timer">
-                <h3>Grand Crossfire</h3>
+                <h5>Grand</h5>
+                <h3>Crossfire</h3>
                 <div id="grandCrossfire">3:00</div>
-                <button onclick="startTimer('grandCrossfire', 180)">Start/Pause</button>
+                <button onclick="toggleTimer('grandCrossfire', 180)">Start</button>
                 <button onclick="resetTimer('grandCrossfire', 180)">Reset</button>
             </div>
-            <div class="timer">
+            <div class="timer pro-timer">
+                <h5>PRO</h5>
                 <h3>Final Focus</h3>
-                <div id="finalFocus">2:00</div>
-                <button onclick="startTimer('finalFocus', 120)">Start/Pause</button>
-                <button onclick="resetTimer('finalFocus', 120)">Reset</button>
+                <div id="proFinalFocus">2:00</div>
+                <button onclick="toggleTimer('proFinalFocus', 120)">Start</button>
+                <button onclick="resetTimer('proFinalFocus', 120)">Reset</button>
             </div>
-        </div>
-
-        <div class="tab">
-            <button class="tablinks pro-tab active" onclick="switchOrder('pro')">PRO First</button>
-            <button class="tablinks con-tab" onclick="switchOrder('con')">CON First</button>
+            <div class="timer con-timer">
+                <h5>CON</h5>
+                <h3>Final Focus</h3>
+                <div id="conFinalFocus">2:00</div>
+                <button onclick="toggleTimer('conFinalFocus', 10)">Start</button>
+                <button onclick="resetTimer('conFinalFocus', 120)">Reset</button>
+            </div>
         </div>
 
         <form id="debateForm">
-            <div class="flow-container" id="flowContainer">
-                <!-- Flow columns will be dynamically inserted here -->
+            <div class="flow-section">
+                <h1>PRO Contentions</h1>
+                <div class="flow-container" id="proFlowContainer">
+                    <!-- PRO Flow columns will be dynamically inserted here -->
+                </div>   
+            </div>
+
+            <div class="flow-section">
+                <h1>CON Contentions</h1>
+                <div class="flow-container" id="conFlowContainer">
+                    <!-- CON Flow columns will be dynamically inserted here -->
+                </div>
             </div>
             
-            <button type="button" class="add-contention" onclick="addContention()">Add Contention</button>
-            
-            <h2>Feedback</h2>
+            <h1>Feedback</h1>
             <div>
-                <h3>RFD (Reason for Decision)</h3>
-                <div class="word-count" id="rfdWordCount">Word count: 0</div>
+                <h4>RFD (Reason for Decision)</h4>
                 <textarea id="rfd" rows="4" oninput="updateWordCount('rfd')"></textarea>
+                <div class="word-count" id="rfdWordCount">Word count: 0</div>
             </div>
             <div>
-                <h3>Feedback for PRO</h3>
-                <div class="word-count" id="proFeedbackWordCount">Word count: 0</div>
+                <h4>Feedback for PRO</h4>
                 <textarea id="proFeedback" rows="4" oninput="updateWordCount('proFeedback')"></textarea>
+                <div class="word-count" id="proFeedbackWordCount">Word count: 0</div>
             </div>
             <div>
-                <h3>Feedback for CON</h3>
-                <div class="word-count" id="conFeedbackWordCount">Word count: 0</div>
+                <h4>Feedback for CON</h4>
                 <textarea id="conFeedback" rows="4" oninput="updateWordCount('conFeedback')"></textarea>
+                <div class="word-count" id="conFeedbackWordCount">Word count: 0</div>
             </div>
         </form>
-        
-        <div id="totalScore"></div>
     </div>
 
     <script>
-        let currentOrder = 'pro';
-        let contentionCount = 4;
+let proContentionCount = 5;
+let conContentionCount = 5;
 
-        function switchOrder(order) {
-            currentOrder = order;
-            document.querySelectorAll('.tablinks').forEach(btn => btn.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-            updateFlow();
-        }
+function updateFlow(side) {
+    const flowContainer = document.getElementById(`${side}FlowContainer`);
+    flowContainer.innerHTML = '';
+    const columns = side === 'pro' 
+        ? ['PRO Constructive', 'CON Rebuttal', 'PRO Summary', 'CON Final Focus']
+        : ['CON Constructive', 'PRO Rebuttal', 'CON Summary', 'PRO Final Focus'];
+    const contentionCount = side === 'pro' ? proContentionCount : conContentionCount;
+    
+    columns.forEach((column, columnIndex) => {
+        const div = document.createElement('div');
+        div.className = 'flow-column';
+        div.innerHTML = `<h4>${column}</h4>`;
+        
+        for (let i = 0; i < contentionCount; i++) {
+            const cellWrapper = document.createElement('div');
+            cellWrapper.className = 'cell-wrapper';
 
-        function updateFlow() {
-            const flowContainer = document.getElementById('flowContainer');
-            flowContainer.innerHTML = '';
-            const columns = ['Constructive', 'Rebuttal', 'Summary', 'Final Focus'];
-            
-            columns.forEach((column, index) => {
-                const div = document.createElement('div');
-                div.className = 'flow-column';
-                div.innerHTML = `<h2>${column}</h2>`;
-                
-                for (let i = 0; i < contentionCount; i++) {
-                    const textarea = document.createElement('textarea');
-                    textarea.rows = 6;
-                    if (currentOrder === 'pro') {
-                        textarea.className = index % 2 === 0 ? 'pro-argument' : 'con-argument';
-                    } else {
-                        textarea.className = index % 2 === 0 ? 'con-argument' : 'pro-argument';
-                    }
-                    textarea.placeholder = `${textarea.className.split('-')[0].toUpperCase()} ${column}`;
-                    textarea.dataset.number = i + 1;
-                    textarea.oninput = adjustHeight;
-                    div.appendChild(textarea);
-                }
-                
-                flowContainer.appendChild(div);
-            });
+            const contentionLabel = document.createElement('span');
+            contentionLabel.className = 'contention-label';
+            contentionLabel.textContent = `Contention ${i + 1}`;
+            cellWrapper.appendChild(contentionLabel);
+
+            const textarea = document.createElement('textarea');
+            textarea.rows = 6;
+            textarea.className = `argument-textarea ${column.startsWith('PRO') ? 'pro-argument' : 'con-argument'}`;
+            textarea.dataset.number = i + 1;
+            textarea.dataset.column = columnIndex;
+            textarea.oninput = adjustHeight;
+            cellWrapper.appendChild(textarea);
+
+            div.appendChild(cellWrapper);
         }
+        
+        flowContainer.appendChild(div);
+    });
+}
+
+                // Initialize the flows
+                updateFlow('pro');
+        updateFlow('con');
+
+        // Add event listeners to update flow when window is resized
+        window.addEventListener('resize', () => {
+            updateFlow('pro');
+            updateFlow('con');
+        });
 
         function adjustHeight() {
             this.style.height = 'auto';
@@ -352,10 +486,6 @@
             textareas.forEach(t => t.style.height = maxHeight + 'px');
         }
 
-        function addContention() {
-            contentionCount++;
-            updateFlow();
-        }
 
         function updateWordCount(id) {
             const text = document.getElementById(id).value;
@@ -363,14 +493,48 @@
             document.getElementById(`${id}WordCount`).textContent = `Word count: ${wordCount}`;
         }
 
-        function startTimer(id, duration) {
+
+        const coin = document.getElementById('coin');
+
+coin.addEventListener('click', () => {
+    // Reset classes to allow for re-animation
+    coin.classList.remove('flip', 'fade');
+
+    // Start the flip animation
+    coin.classList.add('flip');
+    coin.textContent = 'Coin Flip'; // Show "Coin Flip" before the flip
+
+    setTimeout(() => {
+        const result = Math.random() < 0.5 ? 'Heads' : 'Tails';
+        coin.textContent = result;
+
+        // Fade out the text after 2 seconds
+        setTimeout(() => {
+            coin.classList.add('fade');
+            setTimeout(() => {
+                coin.textContent = 'Coin Flip'; // Reset to "Coin Flip"
+                coin.classList.remove('fade'); // Remove fade class for next animation
+            }, 2000); // Duration of fade out
+        }, 2000); // Wait until the result is shown
+    }, 600); // Duration of the flip animation
+
+    // Remove the flip class after the animation ends to allow retriggering
+    setTimeout(() => {
+        coin.classList.remove('flip');
+    }, 600); // Match this duration with the flip animation time
+});
+
+        function toggleTimer(id, duration) {
             const timerElement = document.getElementById(id);
+            const button = timerElement.nextElementSibling;
             let timer = duration;
             let intervalId = timerElement.intervalId;
 
             if (intervalId) {
                 clearInterval(intervalId);
                 timerElement.intervalId = null;
+                button.textContent = 'Start';
+                button.classList.remove('toggled');
             } else {
                 intervalId = setInterval(() => {
                     const minutes = parseInt(timer / 60, 10);
@@ -381,28 +545,70 @@
 
                     if (--timer < 0) {
                         clearInterval(intervalId);
+                        timerElement.intervalId = null;
                         timerElement.textContent = '00:00';
+                        button.textContent = 'Start';
+                        button.classList.remove('toggled');
+                        playEndSound();
                     }
                 }, 1000);
                 timerElement.intervalId = intervalId;
+                button.textContent = 'Stop';
+                button.classList.add('toggled');
             }
         }
 
         function resetTimer(id, duration) {
             const timerElement = document.getElementById(id);
+            const button = timerElement.nextElementSibling;
             clearInterval(timerElement.intervalId);
             timerElement.intervalId = null;
             const minutes = parseInt(duration / 60, 10);
             const seconds = parseInt(duration % 60, 10);
             timerElement.textContent = minutes.toString().padStart(2, '0') + ':' + 
                                        seconds.toString().padStart(2, '0');
+            button.textContent = 'Start';
+            button.classList.remove('toggled');
         }
 
-        // Initialize the flow
-        updateFlow();
 
-        // Add event listeners to update flow when window is resized
-        window.addEventListener('resize', updateFlow);
+
+
+        function playEndSound() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(1000, audioContext.currentTime); // High pitch frequency
+            
+            const gainNode = audioContext.createGain();
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            gainNode.gain.linearRampToValueAtTime(1, audioContext.currentTime + 0.01);
+            gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.11);
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.11);
+            
+            // Second pulse
+            setTimeout(() => {
+                const oscillator2 = audioContext.createOscillator();
+                oscillator2.type = 'sine';
+                oscillator2.frequency.setValueAtTime(1000, audioContext.currentTime);
+                
+                const gainNode2 = audioContext.createGain();
+                gainNode2.gain.setValueAtTime(0, audioContext.currentTime);
+                gainNode2.gain.linearRampToValueAtTime(1, audioContext.currentTime + 0.01);
+                gainNode2.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.11);
+                
+                oscillator2.connect(gainNode2);
+                gainNode2.connect(audioContext.destination);
+                
+                oscillator2.start(audioContext.currentTime);
+                oscillator2.stop(audioContext.currentTime + 0.11);
+            }, 150);
+        }
     </script>
 </body>
 </html>
