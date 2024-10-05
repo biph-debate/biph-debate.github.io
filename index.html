@@ -423,6 +423,8 @@ textarea:focus {
 
         const coin = document.getElementById('coin');
 
+
+
 coin.addEventListener('click', () => {
     // Reset classes to allow for re-animation
     coin.classList.remove('flip', 'fade');
@@ -550,84 +552,62 @@ function resetTimer(id, duration) {
 
 
         const flowContainer = document.getElementById('flowContainer');
-const columns = ['PRO Constructive', 'CON Rebuttal', 'PRO Summary', 'CON Final Focus'];
-const contentionCount = 5;
-let flowContent = Array(columns.length).fill().map(() => Array(contentionCount).fill(''));
+        const allColumns = ['PRO Constructive', 'CON Rebuttal', 'PRO Summary', 'CON Final Focus', 'CON Constructive', 'PRO Rebuttal', 'CON Summary', 'PRO Final Focus'];
+        const contentionCount = 5;
+        let flowContent = Array(allColumns.length).fill().map(() => Array(contentionCount).fill(''));
 
-function createFlow() {
-    flowContainer.innerHTML = '';
+        function createFlow() {
+            flowContainer.innerHTML = '';
 
-    // Add column headers for the first section
-    columns.forEach((column) => {
-        const header = document.createElement('div');
-        header.className = 'column-header';
-        header.textContent = column;
-        flowContainer.appendChild(header);
-    });
+            const firstSection = ['PRO Constructive', 'CON Rebuttal', 'PRO Summary', 'CON Final Focus'];
+            const secondSection = ['CON Constructive', 'PRO Rebuttal', 'CON Summary', 'PRO Final Focus'];
 
-    // Create cells for the first section
-    for (let i = 0; i < contentionCount; i++) {
-        columns.forEach((column, columnIndex) => {
-            const cell = document.createElement('div');
-            cell.className = `flow-cell ${column.startsWith('PRO') ? 'pro-argument' : 'con-argument'}`;
-            cell.dataset.contention = `Contention ${i + 1}`;
+            // Function to create columns for a section
+            function createSection(columns, startIndex) {
+                columns.forEach((column, index) => {
+                    const header = document.createElement('div');
+                    header.className = 'column-header';
+                    header.textContent = column;
+                    flowContainer.appendChild(header);
+                });
 
-            const textarea = document.createElement('textarea');
-            textarea.value = flowContent[columnIndex][i];
-            textarea.oninput = function() {
-                flowContent[columnIndex][i] = this.value;
-                adjustHeight(this);
-            };
+                for (let i = 0; i < contentionCount; i++) {
+                    columns.forEach((column, columnIndex) => {
+                        const cell = document.createElement('div');
+                        cell.className = `flow-cell ${column.startsWith('PRO') ? 'pro-argument' : 'con-argument'}`;
+                        cell.dataset.contention = `Contention ${i + 1}`;
 
-            cell.appendChild(textarea);
-            flowContainer.appendChild(cell);
-        });
-    }
+                        const textarea = document.createElement('textarea');
+                        textarea.value = flowContent[startIndex + columnIndex][i];
+                        textarea.oninput = function() {
+                            flowContent[startIndex + columnIndex][i] = this.value;
+                            adjustHeight(this);
+                        };
 
+                        cell.appendChild(textarea);
+                        flowContainer.appendChild(cell);
+                    });
+                }
+            }
 
-    // Define new column order for the second section
-    const newColumns = ['CON Constructive', 'PRO Rebuttal', 'CON Summary', 'PRO Final Focus'];
+            // Create first section
+            createSection(firstSection, 0);
 
-    // Add column headers for the second section
-    newColumns.forEach((column) => {
-        const header = document.createElement('div');
-        header.className = 'column-header';
-        header.textContent = column;
-        flowContainer.appendChild(header);
-    });
+            // Create second section
+            createSection(secondSection, 4);
+        }
 
-    // Create cells for the second section
-    for (let i = 0; i < contentionCount; i++) {
-        newColumns.forEach((column, columnIndex) => {
-            const cell = document.createElement('div');
-            cell.className = `flow-cell ${column.startsWith('PRO') ? 'pro-argument' : 'con-argument'}`;
-            cell.dataset.contention = `Contention ${i + 1}`;
+        function adjustHeight(element) {
+            element.style.height = 'auto';
+            element.style.height = (element.scrollHeight) + 'px';
+        }
 
-            const textarea = document.createElement('textarea');
-            textarea.value = ''; // Empty for the new section
-            textarea.oninput = function() {
-                flowContent[columnIndex][i] = this.value;
-                adjustHeight(this);
-            };
-
-            cell.appendChild(textarea);
-            flowContainer.appendChild(cell);
-        });
-    }
-}
-
-function adjustHeight(element) {
-    element.style.height = 'auto';
-    element.style.height = (element.scrollHeight) + 'px';
-}
-
-createFlow();
+        createFlow();
 
 window.addEventListener('resize', () => {
     createFlow();
-    document.querySelectorAll('textarea').forEach(adjustHeight);
+    document.querySelectorAll('.flow-cell textarea').forEach(adjustHeight);
 });
-
 
 
 
