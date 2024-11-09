@@ -256,9 +256,25 @@ textarea:focus {
             color: #666;
         }
         
+    /* Add styles for the top bar */
+    .top-bar {
+        display: none; /* Initially hidden */
+        background-color: #222222dd;
+        color: white;
+        text-align: center;
+        padding: 5px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000; /* Ensure it appears above other content */
+    }
     </style>
 </head>
 <body>
+    <div class="top-bar" id="topBar">
+        <span id="timerTitle">Timer Title</span> - <span id="timerTime">00:00</span>
+    </div>
     <div class="container">
         <h1>Public Forum Debate</h1>
         <h2>Flow and Scoring</h2>
@@ -460,6 +476,9 @@ coin.addEventListener('click', () => {
        function toggleTimer(id, duration) {
     const timerElement = document.getElementById(id);
     const button = timerElement.nextElementSibling;
+    const topBar = document.getElementById('topBar');
+    const timerTitle = document.getElementById('timerTitle');
+    const timerTime = document.getElementById('timerTime');
     let timer = timerElement.timerValue !== undefined ? timerElement.timerValue : duration;
     let intervalId = timerElement.intervalId;
 
@@ -470,14 +489,19 @@ coin.addEventListener('click', () => {
         button.textContent = 'Start';
         button.classList.remove('toggled');
         timerElement.timerValue = timer; // Store remaining time
+        topBar.style.display = 'none'; // Hide the top bar
     } else {
         // Start the timer
+        const h5Text = timerElement.previousElementSibling.previousElementSibling.textContent; // Get h5 text
+        const h3Text = timerElement.previousElementSibling.textContent; // Get h3 text
+        timerTitle.textContent = `${h5Text} ${h3Text}`; // Set the title with both h5 and h3 text
+        topBar.style.display = 'block'; // Show the top bar
         intervalId = setInterval(() => {
             const minutes = parseInt(timer / 60, 10);
             const seconds = parseInt(timer % 60, 10);
-
-            timerElement.textContent = minutes.toString().padStart(2, '') + ':' + 
-                                       seconds.toString().padStart(2, '0');
+            timerTime.textContent = minutes.toString().padStart(2, '0') + ':' + 
+                                    seconds.toString().padStart(2, '0');
+            timerElement.textContent = timerTime.textContent; // Update the countdown element text
 
             if (--timer < 0) {
                 clearInterval(intervalId);
@@ -487,6 +511,7 @@ coin.addEventListener('click', () => {
                 button.classList.remove('toggled');
                 playEndSound();
                 timerElement.timerValue = undefined; // Reset stored time
+                topBar.style.display = 'none'; // Hide the top bar when timer ends
             } else {
                 timerElement.timerValue = timer; // Update remaining time
             }
