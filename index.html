@@ -117,7 +117,7 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            margin: 10px 0;
+            margin-bottom: 5px;
         }
         .swap-button:hover {
             background-color: #0056b3;
@@ -130,7 +130,7 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            margin-top: 65px;
+            margin-top: 64px;
         }
         .team-swap-button:hover {
             background-color: #0056b3;
@@ -193,8 +193,13 @@
             padding: 10px;
             background-color: #f0f0f0;
             border-radius: 4px;
+            position: relative;
+            transition: opacity 0.3s;
         }
-        .timer button {
+        .timer.finished {
+            opacity: 0.5;
+        }
+        .timer button:not(.close-button) {
             margin-right: 0px;
             margin-left: 5px;
             margin-bottom: 5px;
@@ -207,11 +212,30 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-        .timer button:hover {
+
+        .timer button:not(.close-button):hover {
             background-color: #0056b3;
         }
-        .timer button.toggled {
+
+        .timer button:not(.close-button).toggled {
             background-color: #28a745;
+        }
+        .close-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            color: #66666645; /* Gray color for the "x" */
+            padding: 0;
+            line-height: 1;
+            transition: color 0.3s;
+        }
+
+        .close-button:hover {
+            color: #333333; /* Charcoal color on hover */
         }
         .pro-timer {
             background-color: #e1f0ff;
@@ -220,6 +244,13 @@
         .con-timer {
             background-color: #fde7e7;
             color: black;
+        }
+        .evidence-timer {
+            background-color: #f0f0f0;
+            color: black;
+            grid-column: 4;
+            margin-top: 10px;
+            align-self: end;
         }
 
         .flow-container {
@@ -350,6 +381,7 @@
                 <div id="proPrep">3m</div>
                 <button onclick="toggleTimer('proPrep', 179)">Start</button>
                 <button onclick="resetTimer('proPrep', 180)">Reset</button>
+                <button class="close-button" onclick="closeTimer('proPrep')">×</button>
             </div>
             <div class="coin-container">
                 <div class="coin" id="coin">Coin Flip</div>
@@ -363,6 +395,7 @@
                 <div id="conPrep">3m</div>
                 <button onclick="toggleTimer('conPrep', 179)">Start</button>
                 <button onclick="resetTimer('conPrep', 180)">Reset</button>
+                <button class="close-button" onclick="closeTimer('conPrep')">×</button>
             </div>
         </div>
 
@@ -373,6 +406,7 @@
                 <div id="proConstructive">4m</div>
                 <button onclick="toggleTimer('proConstructive', 239)">Start</button>
                 <button onclick="resetTimer('proConstructive', 240)">Reset</button>
+                <button class="close-button" onclick="closeTimer('proConstructive')">×</button>
             </div>
             <div class="timer con-timer">
                 <h5>CON</h5>
@@ -380,6 +414,7 @@
                 <div id="conConstructive">4m</div>
                 <button onclick="toggleTimer('conConstructive', 239)">Start</button>
                 <button onclick="resetTimer('conConstructive', 240)">Reset</button>
+                <button class="close-button" onclick="closeTimer('conConstructive')">×</button>
             </div>
             <div class="timer">
                 <h5>1st</h5>
@@ -387,6 +422,7 @@
                 <div id="crossfire1">3m</div>
                 <button onclick="toggleTimer('crossfire1', 179)">Start</button>
                 <button onclick="resetTimer('crossfire1', 180)">Reset</button>
+                <button class="close-button" onclick="closeTimer('crossfire1')">×</button>
             </div>
             <div class="timer pro-timer">
                 <h5>PRO</h5>
@@ -394,6 +430,7 @@
                 <div id="proRebuttal">4m</div>
                 <button onclick="toggleTimer('proRebuttal', 239)">Start</button>
                 <button onclick="resetTimer('proRebuttal', 240)">Reset</button>
+                <button class="close-button" onclick="closeTimer('proRebuttal')">×</button>
             </div>
             <div class="timer con-timer">
                 <h5>CON</h5>
@@ -401,6 +438,7 @@
                 <div id="conRebuttal">4m</div>
                 <button onclick="toggleTimer('conRebuttal', 239)">Start</button>
                 <button onclick="resetTimer('conRebuttal', 240)">Reset</button>
+                <button class="close-button" onclick="closeTimer('conRebuttal')">×</button>
             </div>
             <div class="timer">
                 <h5>2nd</h5>
@@ -408,6 +446,7 @@
                 <div id="crossfire2">3m</div>
                 <button onclick="toggleTimer('crossfire2', 179)">Start</button>
                 <button onclick="resetTimer('crossfire2', 180)">Reset</button>
+                <button class="close-button" onclick="closeTimer('crossfire2')">×</button>
             </div>
             <div class="timer pro-timer">
                 <h5>PRO</h5>
@@ -415,6 +454,7 @@
                 <div id="proSummary">3m</div>
                 <button onclick="toggleTimer('proSummary', 179)">Start</button>
                 <button onclick="resetTimer('proSummary', 180)">Reset</button>
+                <button class="close-button" onclick="closeTimer('proSummary')">×</button>
             </div>
             <div class="timer con-timer">
                 <h5>CON</h5>
@@ -422,6 +462,7 @@
                 <div id="conSummary">3m</div>
                 <button onclick="toggleTimer('conSummary', 179)">Start</button>
                 <button onclick="resetTimer('conSummary', 180)">Reset</button>
+                <button class="close-button" onclick="closeTimer('conSummary')">×</button>
             </div>
             <div class="timer">
                 <h5>Grand</h5>
@@ -429,6 +470,7 @@
                 <div id="grandCrossfire">3m</div>
                 <button onclick="toggleTimer('grandCrossfire', 179)">Start</button>
                 <button onclick="resetTimer('grandCrossfire', 180)">Reset</button>
+                <button class="close-button" onclick="closeTimer('grandCrossfire')">×</button>
             </div>
             <div class="timer pro-timer">
                 <h5>PRO</h5>
@@ -436,6 +478,7 @@
                 <div id="proFinalFocus">2m</div>
                 <button onclick="toggleTimer('proFinalFocus', 119)">Start</button>
                 <button onclick="resetTimer('proFinalFocus', 120)">Reset</button>
+                <button class="close-button" onclick="closeTimer('proFinalFocus')">×</button>
             </div>
             <div class="timer con-timer">
                 <h5>CON</h5>
@@ -443,10 +486,21 @@
                 <div id="conFinalFocus">2m</div>
                 <button onclick="toggleTimer('conFinalFocus', 119)">Start</button>
                 <button onclick="resetTimer('conFinalFocus', 120)">Reset</button>
+                <button class="close-button" onclick="closeTimer('conFinalFocus')">×</button>
             </div>
         </div>
 
-        <div id="flowContainer" class="flow-container"></div>
+        <div id="flowContainer" class="flow-container">
+            <!-- Flow grid will be populated by JavaScript -->
+            <div class="timer evidence-timer">
+                <h5>Evidence</h5>
+                <h3>Check</h3>
+                <div id="evidenceCheck">1m</div>
+                <button onclick="toggleTimer('evidenceCheck', 59)">Start</button>
+                <button onclick="resetTimer('evidenceCheck', 60)">Reset</button>
+                <button class="close-button" onclick="closeTimer('evidenceCheck')">×</button>
+            </div>
+        </div>
 
         <h1>Feedback</h1>
         <div>
@@ -611,6 +665,7 @@
                     <div id="${timers[0].id}">${Math.floor(timers[0].duration / 60)}m</div>
                     <button onclick="toggleTimer('${timers[0].id}', ${timers[0].duration - 1})">Start</button>
                     <button onclick="resetTimer('${timers[0].id}', ${timers[0].duration})">Reset</button>
+                    <button class="close-button" onclick="closeTimer('${timers[0].id}')">×</button>
                 </div>
                 <div class="coin-container">
                     <div class="coin" id="coin">Coin Flip</div>
@@ -624,6 +679,7 @@
                     <div id="${timers[1].id}">${Math.floor(timers[1].duration / 60)}m</div>
                     <button onclick="toggleTimer('${timers[1].id}', ${timers[1].duration - 1})">Start</button>
                     <button onclick="resetTimer('${timers[1].id}', ${timers[1].duration})">Reset</button>
+                    <button class="close-button" onclick="closeTimer('${timers[1].id}')">×</button>
                 </div>
             `;
 
@@ -636,6 +692,7 @@
                     <div id="${timer.id}">${Math.floor(timer.duration / 60)}m</div>
                     <button onclick="toggleTimer('${timer.id}', ${timer.duration - 1})">Start</button>
                     <button onclick="resetTimer('${timer.id}', ${timer.duration})">Reset</button>
+                    <button class="close-button" onclick="closeTimer('${timer.id}')">×</button>
                 `;
                 mainTimerContainer.appendChild(div);
             });
@@ -676,6 +733,19 @@
 
             createSection(firstSection, 0);
             createSection(secondSection, 4);
+
+            // Append Evidence Check timer
+            const evidenceTimer = document.createElement('div');
+            evidenceTimer.className = 'timer evidence-timer';
+            evidenceTimer.innerHTML = `
+                <h5>Evidence</h5>
+                <h3>Check</h3>
+                <div id="evidenceCheck">1m</div>
+                <button onclick="toggleTimer('evidenceCheck', 59)">Start</button>
+                <button onclick="resetTimer('evidenceCheck', 60)">Reset</button>
+                <button class="close-button" onclick="closeTimer('evidenceCheck')">×</button>
+            `;
+            flowContainer.appendChild(evidenceTimer);
         }
 
         function adjustHeight(element) {
@@ -724,9 +794,10 @@
                     if (--timer < 0) {
                         clearInterval(intervalId);
                         timerElement.intervalId = null;
-                        timerElement.textContent = '0:00';
+                        timerElement.textContent = '--:--';
                         button.textContent = 'Start';
                         button.classList.remove('toggled');
+                        timerElement.parentElement.classList.add('finished');
                         playEndSound();
                         timerElement.timerValue = undefined;
                         topBar.removeChild(timerEntry);
@@ -742,6 +813,7 @@
                 timerElement.intervalId = intervalId;
                 button.textContent = 'Stop';
                 button.classList.add('toggled');
+                timerElement.parentElement.classList.remove('finished');
             }
         }
 
@@ -756,6 +828,31 @@
             timerElement.textContent = `${minutes}m`;
             button.textContent = 'Start';
             button.classList.remove('toggled');
+            timerElement.parentElement.classList.remove('finished');
+        }
+
+        function closeTimer(id) {
+            const timerElement = document.getElementById(id);
+            const button = timerElement.nextElementSibling;
+            clearInterval(timerElement.intervalId);
+            timerElement.intervalId = null;
+            timerElement.timerValue = undefined;
+            timerElement.textContent = '--:--';
+            button.textContent = 'Start';
+            button.classList.remove('toggled');
+            timerElement.parentElement.classList.add('finished');
+            const topBar = document.getElementById('topBar');
+            const timerEntry = Array.from(topBar.children).find(entry => 
+                entry.textContent.includes(timerElement.previousElementSibling.previousElementSibling.textContent + ' ' + 
+                                          timerElement.previousElementSibling.textContent));
+            if (timerEntry) {
+                topBar.removeChild(timerEntry);
+                activeTimers--;
+                if (activeTimers === 0) {
+                    topBar.style.display = 'none';
+                    topBar.innerHTML = '';
+                }
+            }
         }
 
         function playEndSound() {
