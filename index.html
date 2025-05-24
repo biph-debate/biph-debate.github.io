@@ -4,335 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PF Debate Flow and Scoring</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        .container {
-            max-width: 1400px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-
-        h1 {
-            color: #000000;
-            margin-top: 0;
-            margin-bottom: 10;
-            text-align: center;
-        }
-        h2 {
-            color: #000000;
-            font-family: 'Verdana', serif;
-            font-weight: normal;
-            text-align: center;
-            margin-top: -30px;
-            margin-bottom: 0;
-        }
-        h3 {
-            color: #000000;
-            text-align: center;
-            margin-top: 10px;
-            margin-bottom: 0px;
-        }
-        h4 {
-            color: #000000;
-            font-size: larger;
-            text-align: left;
-            margin-bottom: 5px;
-        }
-        h5 {
-            margin-top: 10px;
-            margin-bottom: -15px;
-            color: #000000;
-            text-align: center;
-        }
-        textarea {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            resize: none;
-            min-height: 100px;
-            position: relative;
-            padding-top: 25px;
-            box-sizing: border-box;
-        }
-        textarea::before {
-            content: attr(data-number);
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            font-weight: bold;
-            color: #666;
-        }
-        input[type="text"], input[type="number"] {
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        input[type="number"] {
-            width: 60px;
-        }
-        label {
-            display: inline-block;
-            font-size: small;
-            margin-left: 2px;
-            margin-bottom: 4px;
-            font-weight: bold;
-            margin-top: 5px;
-        }
-
-        .speakers {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            align-items: flex-start;
-        }
-        .speaker-input {
-            width: 45%;
-        }
-        .speaker-row {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 20px;
-        }
-        .speaker-row input[type="text"] {
-            margin-bottom: 5px;
-        }
-        .swap-button {
-            align-self: center;
-            padding: 5px 10px;
-            font-size: 14px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-bottom: 5px;
-        }
-        .swap-button:hover {
-            background-color: #0056b3;
-        }
-        .team-swap-button {
-            padding: 5px 10px;
-            font-size: 14px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 64px;
-        }
-        .team-swap-button:hover {
-            background-color: #0056b3;
-        }
-        .export-button {
-            display: block;
-            margin: 20px auto;
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .export-button:hover {
-            background-color: #218838;
-        }
-
-        .coin {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #f5c518, #d4a10f);
-            border: 2px solid #b8860b;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            color: white;
-            transition: transform 0.5s;
-            cursor: pointer;
-        }
-        .flip {
-            animation: flip 0.6s ease forwards;
-        }
-        @keyframes flip {
-            0% { transform: rotateX(0); }
-            25% { transform: rotateX(180deg); }
-            50% { transform: rotateX(360deg); }
-            75% { transform: rotateX(540deg); }
-            100% { transform: rotateX(720deg); }
-        }
-        .fade {
-            opacity: 0;
-            transition: opacity 1s ease;
-        }
-
-        .timer-container {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0px;
-            flex-wrap: wrap;
-        }
-        .timer {
-            text-align: center;
-            margin: 5px;
-            padding: 10px;
-            background-color: #f0f0f0;
-            border-radius: 4px;
-            position: relative;
-            transition: opacity 0.3s;
-        }
-        .timer.finished {
-            opacity: 0.5;
-        }
-        .timer button:not(.close-button) {
-            margin-right: 0px;
-            margin-left: 5px;
-            margin-bottom: 5px;
-            font-size: 12px;
-            padding: 5px 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .timer button:not(.close-button):hover {
-            background-color: #0056b3;
-        }
-
-        .timer button:not(.close-button).toggled {
-            background-color: #28a745;
-        }
-        .close-button {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background: none;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-            color: #66666645; /* Gray color for the "x" */
-            padding: 0;
-            line-height: 1;
-            transition: color 0.3s;
-        }
-
-        .close-button:hover {
-            color: #333333; /* Charcoal color on hover */
-        }
-        .pro-timer {
-            background-color: #e1f0ff;
-            color: black;
-        }
-        .con-timer {
-            background-color: #fde7e7;
-            color: black;
-        }
-        .evidence-timer {
-            background-color: #f0f0f0;
-            color: black;
-            grid-column: 4;
-            margin-top: 10px;
-            align-self: end;
-        }
-
-        .flow-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            max-width: 1200px;
-            margin: 0 auto;
-            margin-bottom: 50px;
-        }
-        .column-header {
-            margin-top: 50px;
-            font-weight: bold;
-            text-align: center;
-        }
-        .flow-cell {
-            min-height: 100px;
-            padding: 25px 10px 10px;
-            box-sizing: border-box;
-            position: relative;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .flow-cell::before {
-            content: attr(data-contention);
-            position: absolute;
-            top: 5px;
-            left: 10px;
-            font-size: 0.8em;
-            opacity: 0.5;
-        }
-        .pro-argument {
-            background-color: #e6f3ff;
-        }
-        .con-argument {
-            background-color: #fff0f0;
-        }
-        textarea {
-            width: 100%;
-            height: 100%;
-            min-height: 80px;
-            border: none;
-            background: transparent;
-            font-family: inherit;
-            font-size: inherit;
-            padding: 2px;
-        }
-        textarea:focus {
-            outline: none;
-        }
-        .comment {
-            margin-top: -5px;
-            background-color: #f7f7f7;
-            border: 1px solid #afafaf;
-            padding-left: 9px;
-            padding-top: 8px;
-        }
-        .word-count {
-            margin-top: -20px;
-            text-align: right;
-            font-style: italic;
-            color: #666;
-        }
-        .top-bar {
-            display: none;
-            background-color: #222222dd;
-            color: white;
-            text-align: center;
-            padding: 5px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-        }
-        .mode-toggle {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 10px 0;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="top-bar" id="topBar"></div>
@@ -344,13 +16,13 @@
             <div class="speaker-input">
                 <h4>PRO Speakers</h4>
                 <div class="speaker-row">
-                    <input type="text" id="proSpeaker1" placeholder="PRO Speaker 1" oninput="updateFeedbackTitles()">
+                    <input type="text" id="proSpeaker1" class="pro-speaker" placeholder="PRO Speaker 1" oninput="updateFeedbackTitles()">
                     <label for="proScore1">Score (25-30):</label>
                     <input type="number" id="proScore1" name="proScore1" min="25" max="30" required>
                 </div>
                 <button class="swap-button" onclick="swapSpeakers('proSpeaker1', 'proScore1', 'proSpeaker2', 'proScore2')">↕</button>
                 <div class="speaker-row">
-                    <input type="text" id="proSpeaker2" placeholder="PRO Speaker 2" oninput="updateFeedbackTitles()">
+                    <input type="text" id="proSpeaker2" class="pro-speaker" placeholder="PRO Speaker 2" oninput="updateFeedbackTitles()">
                     <label for="proScore2">Score (25-30):</label>
                     <input type="number" id="proScore2" name="proScore2" min="25" max="30" required>
                 </div>
@@ -361,13 +33,13 @@
             <div class="speaker-input">
                 <h4>CON Speakers</h4>
                 <div class="speaker-row">
-                    <input type="text" id="conSpeaker1" placeholder="CON Speaker 1" oninput="updateFeedbackTitles()">
+                    <input type="text" id="conSpeaker1" class="con-speaker" placeholder="CON Speaker 1" oninput="updateFeedbackTitles()">
                     <label for="conScore1">Score (25-30):</label>
                     <input type="number" id="conScore1" name="conScore1" min="25" max="30" required>
                 </div>
                 <button class="swap-button" onclick="swapSpeakers('conSpeaker1', 'conScore1', 'conSpeaker2', 'conScore2')">↕</button>
                 <div class="speaker-row">
-                    <input type="text" id="conSpeaker2" placeholder="CON Speaker 2" oninput="updateFeedbackTitles()">
+                    <input type="text" id="conSpeaker2" class="con-speaker" placeholder="CON Speaker 2" oninput="updateFeedbackTitles()">
                     <label for="conScore2">Score (25-30):</label>
                     <input type="number" id="conScore2" name="conScore2" min="25" max="30" required>
                 </div>
@@ -375,7 +47,7 @@
         </div>
 
         <div class="timer-container" id="prepTimerContainer">
-            <div class="timer pro-timer">
+            <div class="timer pro-timer" id="proPrepTimer">
                 <h5>PRO</h5>
                 <h3>Prep</h3>
                 <div id="proPrep">3m</div>
@@ -389,7 +61,7 @@
                     <button id="modeToggleButton" onclick="toggleMode()">↔ PRO First</button>
                 </div>
             </div>
-            <div class="timer con-timer">
+            <div class="timer con-timer" id="conPrepTimer">
                 <h5>CON</h5>
                 <h3>Prep</h3>
                 <div id="conPrep">3m</div>
@@ -491,7 +163,6 @@
         </div>
 
         <div id="flowContainer" class="flow-container">
-            <!-- Flow grid will be populated by JavaScript -->
             <div class="timer evidence-timer">
                 <h5>Evidence</h5>
                 <h3>Check</h3>
@@ -561,6 +232,7 @@
             const conScore1 = document.getElementById('conScore1');
             const conSpeaker2 = document.getElementById('conSpeaker2');
             const conScore2 = document.getElementById('conScore2');
+
             const tempProName1 = proSpeaker1.value;
             const tempProScore1 = proScore1.value;
             const tempProName2 = proSpeaker2.value;
@@ -573,30 +245,15 @@
             conScore1.value = tempProScore1;
             conSpeaker2.value = tempProName2;
             conScore2.value = tempProScore2;
+
             updateFeedbackTitles();
         }
 
         function updateTimerOrder() {
             const mainTimerContainer = document.getElementById('mainTimerContainer');
-            const prepTimerContainer = document.getElementById('prepTimerContainer');
             mainTimerContainer.innerHTML = '';
-            prepTimerContainer.innerHTML = '';
 
             const timers = [
-                {
-                    h5: isProFirst ? 'PRO' : 'CON',
-                    h3: 'Prep',
-                    id: isProFirst ? 'proPrep' : 'conPrep',
-                    duration: 180,
-                    className: isProFirst ? 'pro-timer' : 'con-timer'
-                },
-                {
-                    h5: isProFirst ? 'CON' : 'PRO',
-                    h3: 'Prep',
-                    id: isProFirst ? 'conPrep' : 'proPrep',
-                    duration: 180,
-                    className: isProFirst ? 'con-timer' : 'pro-timer'
-                },
                 {
                     h5: isProFirst ? 'PRO' : 'CON',
                     h3: 'Constructive',
@@ -658,32 +315,7 @@
                 }
             ];
 
-            prepTimerContainer.innerHTML = `
-                <div class="timer ${timers[0].className}">
-                    <h5>${timers[0].h5}</h5>
-                    <h3>${timers[0].h3}</h3>
-                    <div id="${timers[0].id}">${Math.floor(timers[0].duration / 60)}m</div>
-                    <button onclick="toggleTimer('${timers[0].id}', ${timers[0].duration - 1})">Start</button>
-                    <button onclick="resetTimer('${timers[0].id}', ${timers[0].duration})">Reset</button>
-                    <button class="close-button" onclick="closeTimer('${timers[0].id}')">×</button>
-                </div>
-                <div class="coin-container">
-                    <div class="coin" id="coin">Coin Flip</div>
-                    <div class="mode-toggle">
-                        <button id="modeToggleButton" onclick="toggleMode()">↔ ${isProFirst ? 'PRO First' : 'CON First'}</button>
-                    </div>
-                </div>
-                <div class="timer ${timers[1].className}">
-                    <h5>${timers[1].h5}</h5>
-                    <h3>${timers[1].h3}</h3>
-                    <div id="${timers[1].id}">${Math.floor(timers[1].duration / 60)}m</div>
-                    <button onclick="toggleTimer('${timers[1].id}', ${timers[1].duration - 1})">Start</button>
-                    <button onclick="resetTimer('${timers[1].id}', ${timers[1].duration})">Reset</button>
-                    <button class="close-button" onclick="closeTimer('${timers[1].id}')">×</button>
-                </div>
-            `;
-
-            timers.slice(2).forEach(timer => {
+            timers.forEach(timer => {
                 const div = document.createElement('div');
                 div.className = `timer ${timer.className}`;
                 div.innerHTML = `
@@ -734,7 +366,6 @@
             createSection(firstSection, 0);
             createSection(secondSection, 4);
 
-            // Append Evidence Check timer
             const evidenceTimer = document.createElement('div');
             evidenceTimer.className = 'timer evidence-timer';
             evidenceTimer.innerHTML = `
@@ -925,6 +556,13 @@
             }, 600);
         }
 
+        function escapeRTF(text) {
+            return text.replace(/\\/g, '\\\\')
+                      .replace(/{/g, '\\{')
+                      .replace(/}/g, '\\}')
+                      .replace(/\n/g, '\\par');
+        }
+
         function exportToRTF() {
             const proSpeaker1 = document.getElementById('proSpeaker1').value.trim();
             const proScore1 = document.getElementById('proScore1').value;
@@ -942,50 +580,70 @@
                  'CON Constructive', 'PRO Rebuttal', 'CON Summary', 'PRO Final Focus'] :
                 ['CON Constructive', 'PRO Rebuttal', 'CON Summary', 'PRO Final Focus', 
                  'PRO Constructive', 'CON Rebuttal', 'PRO Summary', 'CON Final Focus'];
+            const proColumnIndices = isProFirst ? [0, 1, 2, 3] : [4, 5, 6, 7];
+            const conColumnIndices = isProFirst ? [4, 5, 6, 7] : [0, 1, 2, 3];
 
-            let rtfContent = '{\\rtf1\\ansi\\deff0\n';
+            let rtfContent = '{\\rtf1\\ansi\\ansicpg1252\\deff0\n';
             rtfContent += '{\\colortbl ;\\red0\\green0\\blue0;\\red0\\green128\\blue255;\\red255\\green0\\blue0;}\n';
             rtfContent += '{\\fonttbl{\\f0\\fswiss Arial;}}\n';
             rtfContent += '\\f0\\fs24\n';
             rtfContent += '\\b\\fs36 Public Forum Debate Flow and Scoring\\par\\b0\\fs24\\par\n';
             rtfContent += '\\b Speakers\\par\\b0\n';
-            if (proSpeaker1) rtfContent += `\\cf2 PRO Speaker 1: ${proSpeaker1}${proScore1 ? ` (Score: ${proScore1})` : ''}\\par\n`;
-            if (proSpeaker2) rtfContent += `\\cf2 PRO Speaker 2: ${proSpeaker2}${proScore2 ? ` (Score: ${proScore2})` : ''}\\par\n`;
-            if (conSpeaker1) rtfContent += `\\cf3 CON Speaker 1: ${conSpeaker1}${conScore1 ? ` (Score: ${conScore1})` : ''}\\par\n`;
-            if (conSpeaker2) rtfContent += `\\cf3 CON Speaker 2: ${conSpeaker2}${conScore2 ? ` (Score: ${conScore2})` : ''}\\par\n`;
+            if (proSpeaker1) rtfContent += `\\cf2 PRO Speaker 1: ${escapeRTF(proSpeaker1)}${proScore1 ? ` (Score: ${proScore1})` : ''}\\par\n`;
+            if (proSpeaker2) rtfContent += `\\cf2 PRO Speaker 2: ${escapeRTF(proSpeaker2)}${proScore2 ? ` (Score: ${proScore2})` : ''}\\par\n`;
+            if (conSpeaker1) rtfContent += `\\cf3 CON Speaker 1: ${escapeRTF(conSpeaker1)}${conScore1 ? ` (Score: ${conScore1})` : ''}\\par\n`;
+            if (conSpeaker2) rtfContent += `\\cf3 CON Speaker 2: ${escapeRTF(conSpeaker2)}${conScore2 ? ` (Score: ${conScore2})` : ''}\\par\n`;
             rtfContent += '\\par\n';
-            rtfContent += '\\b Flow\\par\\b0\n';
 
+            // PRO Contentions
             for (let i = 0; i < contentionCount; i++) {
-                rtfContent += `Contention ${i + 1}:\\par\n`;
-                columns.forEach((column, index) => {
-                    const content = flowContent[index][i];
-                    if (content) {
-                        const color = column.startsWith('PRO') ? '\\cf2' : '\\cf3';
-                        rtfContent += `${color} ${column}: \\cf1 ${content.replace(/\n/g, '\\par')}\\par\n`;
-                    }
-                });
-                rtfContent += '\\par\n';
+                const hasContent = proColumnIndices.some(index => flowContent[index][i].trim());
+                if (hasContent) {
+                    rtfContent += `\\cf1\\b PRO Contention ${i + 1}\\b0\\par\n`;
+                    proColumnIndices.forEach(index => {
+                        const content = flowContent[index][i].trim();
+                        if (content) {
+                            const color = columns[index].startsWith('PRO') ? '\\cf2' : '\\cf3';
+                            rtfContent += `${color} ${columns[index]}: \\cf1 ${escapeRTF(content)}\\par\n`;
+                        }
+                    });
+                    rtfContent += '\\par\n';
+                }
+            }
+
+            // CON Contentions
+            for (let i = 0; i < contentionCount; i++) {
+                const hasContent = conColumnIndices.some(index => flowContent[index][i].trim());
+                if (hasContent) {
+                    rtfContent += `\\cf1\\b CON Contention ${i + 1}\\b0\\par\n`;
+                    conColumnIndices.forEach(index => {
+                        const content = flowContent[index][i].trim();
+                        if (content) {
+                            const color = columns[index].startsWith('PRO') ? '\\cf2' : '\\cf3';
+                            rtfContent += `${color} ${columns[index]}: \\cf1 ${escapeRTF(content)}\\par\n`;
+                        }
+                    });
+                    rtfContent += '\\par\n';
+                }
             }
 
             rtfContent += '\\b Feedback\\par\\b0\n';
-            if (rfd) rtfContent += `\\cf1 RFD (Reason for Decision): ${rfd.replace(/\n/g, '\\par')}\\par\\par\n`;
-            if (proFeedback) {
-                const proNames = [proSpeaker1, proSpeaker2].filter(Boolean).join(' & ') || 'PRO';
-                rtfContent += `\\cf2 Feedback for PRO (${proNames}): \\cf1 ${proFeedback.replace(/\n/g, '\\par')}\\par\\par\n`;
-            }
-            if (conFeedback) {
-                const conNames = [conSpeaker1, conSpeaker2].filter(Boolean).join(' & ') || 'CON';
-                rtfContent += `\\cf3 Feedback for CON (${conNames}): \\cf1 ${conFeedback.replace(/\n/g, '\\par')}\\par\\par\n`;
-            }
-            rtfContent += `\\cf1 \\fs20 © Garrison Tubbs 2025\\par\n`;
+            const proNames = [proSpeaker1, proSpeaker2].filter(Boolean).join(' & ') || 'PRO';
+            const conNames = [conSpeaker1, conSpeaker2].filter(Boolean).join(' & ') || 'CON';
+            if (rfd) rtfContent += `\\cf1 RFD (Reason for Decision): ${escapeRTF(rfd)}\\par\\par\n`;
+            if (proFeedback) rtfContent += `\\cf2 Feedback for PRO (${proNames}): \\cf1 ${escapeRTF(proFeedback)}\\par\\par\n`;
+            if (conFeedback) rtfContent += `\\cf3 Feedback for CON (${conNames}): \\cf1 ${escapeRTF(conFeedback)}\\par\\par\n`;
+            rtfContent += `\\cf1 \\fs20 \\u169? Garrison Tubbs 2025\\par\n`;
             rtfContent += '}\n';
 
+            const proTeam = [proSpeaker1, proSpeaker2].filter(Boolean).join(' & ') || 'PRO';
+            const conTeam = [conSpeaker1, conSpeaker2].filter(Boolean).join(' & ') || 'CON';
+            const filename = `PF - May 24 - ${proTeam}, ${conTeam}.rtf`.replace(/[<>:"\/\\|?*]/g, '_');
             const blob = new Blob([rtfContent], { type: 'application/rtf' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'Debate_Flow.rtf';
+            a.download = filename;
             a.click();
             URL.revokeObjectURL(url);
         }
