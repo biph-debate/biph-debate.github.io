@@ -219,6 +219,50 @@ label {
 .timer button:not(.close-button).toggled {
     background-color: #28a745;
 }
+
+.timer-button {
+    margin-right: 0px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+    font-size: 12px;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.prep-options {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    width: fit-content;
+}
+
+.prep-options select {
+    width: 120px; /* Fixed width for dropdown */
+    height: 30px;
+    padding: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.prep-options .go-button {
+    margin-right: 0px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+    font-size: 12px;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
 .close-button {
     position: absolute;
     top: 5px;

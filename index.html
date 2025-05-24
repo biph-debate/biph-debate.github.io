@@ -49,11 +49,22 @@
         <div class="timer-container" id="prepTimerContainer">
             <div class="timer pro-timer" id="proPrepTimer">
                 <h5>PRO</h5>
-                <h3>Prep</h3>
+                <h3 onclick="showPrepTimePrompt('proPrep')">Prep</h3>
                 <div id="proPrep">3m</div>
-                <button onclick="toggleTimer('proPrep', 179)">Start</button>
-                <button onclick="resetTimer('proPrep', 180)">Reset</button>
+                <button class="timer-button start-button" onclick="toggleTimer('proPrep', 179)">Start</button>
+                <button class="timer-button reset-button" onclick="resetTimer('proPrep', 180)">Reset</button>
                 <button class="close-button" onclick="closeTimer('proPrep')">×</button>
+                <div class="prep-options" id="proPrepOptions" style="display: none;">
+                    <select id="proPrepTimeSelect">
+                        <option value="30">30 seconds</option>
+                        <option value="60">1 minute</option>
+                        <option value="75">1 minute 15 seconds</option>
+                        <option value="90">1 minute 30 seconds</option>
+                        <option value="105">1 minute 45 seconds</option>
+                        <option value="120">2 minutes</option>
+                    </select>
+                    <button class="timer-button go-button" onclick="subtractPrepTime('proPrep')">Go</button>
+                </div>
             </div>
             <div class="coin-container">
                 <div class="coin" id="coin">Coin Flip</div>
@@ -63,11 +74,22 @@
             </div>
             <div class="timer con-timer" id="conPrepTimer">
                 <h5>CON</h5>
-                <h3>Prep</h3>
+                <h3 onclick="showPrepTimePrompt('conPrep')">Prep</h3>
                 <div id="conPrep">3m</div>
-                <button onclick="toggleTimer('conPrep', 179)">Start</button>
-                <button onclick="resetTimer('conPrep', 180)">Reset</button>
+                <button class="timer-button start-button" onclick="toggleTimer('conPrep', 179)">Start</button>
+                <button class="timer-button reset-button" onclick="resetTimer('conPrep', 180)">Reset</button>
                 <button class="close-button" onclick="closeTimer('conPrep')">×</button>
+                <div class="prep-options" id="conPrepOptions" style="display: none;">
+                    <select id="conPrepTimeSelect">
+                        <option value="30">30 seconds</option>
+                        <option value="60">1 minute</option>
+                        <option value="75">1 minute 15 seconds</option>
+                        <option value="90">1 minute 30 seconds</option>
+                        <option value="105">1 minute 45 seconds</option>
+                        <option value="120">2 minutes</option>
+                    </select>
+                    <button class="timer-button go-button" onclick="subtractPrepTime('conPrep')">Go</button>
+                </div>
             </div>
         </div>
 
@@ -460,6 +482,9 @@
             button.textContent = 'Start';
             button.classList.remove('toggled');
             timerElement.parentElement.classList.remove('finished');
+            if (id === 'proPrep' || id === 'conPrep') {
+                document.getElementById(`${id}Options`).style.display = 'none';
+            }
         }
 
         function closeTimer(id) {
@@ -483,6 +508,9 @@
                     topBar.style.display = 'none';
                     topBar.innerHTML = '';
                 }
+            }
+            if (id === 'proPrep' || id === 'conPrep') {
+                document.getElementById(`${id}Options`).style.display = 'none';
             }
         }
 
@@ -512,6 +540,82 @@
                 oscillator2.start(audioContext.currentTime);
                 oscillator2.stop(audioContext.currentTime + 0.11);
             }, 150);
+        }
+
+        function showPrepTimePrompt(id) {
+    const options = document.getElementById(`${id}Options`);
+    const startButton = document.getElementById(id).nextElementSibling;
+    const resetButton = startButton.nextElementSibling;
+    const isVisible = options.style.display === 'none';
+    options.style.display = isVisible ? 'block' : 'none';
+    startButton.style.display = isVisible ? 'none' : 'inline-block';
+    resetButton.style.display = isVisible ? 'none' : 'inline-block';
+}
+
+        function subtractPrepTime(id) {
+            const timerElement = document.getElementById(id);
+            const select = document.getElementById(`${id}TimeSelect`);
+            const selectedTime = parseInt(select.value);
+            const topBar = document.getElementById('topBar');
+            let currentTime = timerElement.timerValue !== undefined ? timerElement.timerValue : 180;
+
+            if (currentTime < selectedTime) {
+                alert('Not enough prep time remaining!');
+                return;
+            }
+
+            clearInterval(timerElement.intervalId);
+            timerElement.intervalId = null;
+            timerElement.nextElementSibling.textContent = 'Start';
+            timerElement.nextElementSibling.classList.remove('toggled');
+            document.getElementById(`${id}Options`).style.display = 'none';
+
+            activeTimers++;
+            const h5Text = timerElement.previousElementSibling.previousElementSibling.textContent;
+            const h3Text = timerElement.previousElementSibling.textContent;
+            const timerEntry = document.createElement('div');
+            timerEntry.className = 'timer-entry';
+            timerEntry.textContent = `${h5Text} ${h3Text}: ${formatTime(selectedTime)}`;
+            topBar.appendChild(timerEntry);
+            topBar.style.display = 'block';
+
+            let timer = selectedTime - 1;
+            timerElement.timerValue = currentTime - selectedTime;
+            const remainingTime = timerElement.timerValue;
+            timerElement.textContent = formatTime(remainingTime);
+
+            if (remainingTime <= 0) {
+                timerElement.textContent = '--:--';
+                timerElement.parentElement.classList.add('finished');
+            }
+
+            const intervalId = setInterval(() => {
+                const displayText = formatTime(timer);
+                timerEntry.textContent = `${h5Text} ${h3Text}: ${displayText}`;
+
+                if (--timer < 0) {
+                    clearInterval(intervalId);
+                    timerElement.intervalId = null;
+                    playEndSound();
+                    topBar.removeChild(timerEntry);
+                    activeTimers--;
+                    if (activeTimers === 0) {
+                        topBar.style.display = 'none';
+                        topBar.innerHTML = '';
+                    }
+                    if (timerElement.timerValue <= 0) {
+                        timerElement.textContent = '--:--';
+                        timerElement.parentElement.classList.add('finished');
+                    }
+                }
+            }, 1000);
+            timerElement.intervalId = intervalId;
+        }
+
+        function formatTime(seconds) {
+            const minutes = parseInt(seconds / 60, 10);
+            const secs = parseInt(seconds % 60, 10);
+            return minutes.toString().padStart(2, '0') + ':' + secs.toString().padStart(2, '0');
         }
 
         function updateWordCount(id) {
@@ -647,6 +751,28 @@
             a.click();
             URL.revokeObjectURL(url);
         }
+
+        // Event listeners for closing prep options
+        document.addEventListener('click', (event) => {
+            const proOptions = document.getElementById('proPrepOptions');
+            const conOptions = document.getElementById('conPrepOptions');
+            const proHeader = document.getElementById('proPrepTimer').querySelector('h3');
+            const conHeader = document.getElementById('conPrepTimer').querySelector('h3');
+
+            if (!proOptions.contains(event.target) && !proHeader.contains(event.target)) {
+                proOptions.style.display = 'none';
+            }
+            if (!conOptions.contains(event.target) && !conHeader.contains(event.target)) {
+                conOptions.style.display = 'none';
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                document.getElementById('proPrepOptions').style.display = 'none';
+                document.getElementById('conPrepOptions').style.display = 'none';
+            }
+        });
 
         createFlow();
         updateTimerOrder();
