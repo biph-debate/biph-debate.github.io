@@ -544,10 +544,15 @@
 
         function showPrepTimePrompt(id) {
     const options = document.getElementById(`${id}Options`);
-    const startButton = document.getElementById(id).nextElementSibling;
+    const timerElement = document.getElementById(id);
+    const startButton = timerElement.nextElementSibling;
     const resetButton = startButton.nextElementSibling;
     const isVisible = options.style.display === 'none';
+    
+    // Toggle the dropdown visibility
     options.style.display = isVisible ? 'block' : 'none';
+    
+    // Explicitly set the Start and Reset buttons' display
     startButton.style.display = isVisible ? 'none' : 'inline-block';
     resetButton.style.display = isVisible ? 'none' : 'inline-block';
 }
@@ -753,26 +758,53 @@
         }
 
         // Event listeners for closing prep options
-        document.addEventListener('click', (event) => {
-            const proOptions = document.getElementById('proPrepOptions');
-            const conOptions = document.getElementById('conPrepOptions');
-            const proHeader = document.getElementById('proPrepTimer').querySelector('h3');
-            const conHeader = document.getElementById('conPrepTimer').querySelector('h3');
-
-            if (!proOptions.contains(event.target) && !proHeader.contains(event.target)) {
-                proOptions.style.display = 'none';
-            }
-            if (!conOptions.contains(event.target) && !conHeader.contains(event.target)) {
-                conOptions.style.display = 'none';
-            }
-        });
+document.addEventListener('click', (event) => {
+    const proOptions = document.getElementById('proPrepOptions');
+    const conOptions = document.getElementById('conPrepOptions');
+    const proHeader = document.getElementById('proPrepTimer').querySelector('h3');
+    const conHeader = document.getElementById('conPrepTimer').querySelector('h3');
+    
+    // Close PRO prep options if clicking outside
+    if (!proOptions.contains(event.target) && !proHeader.contains(event.target)) {
+        proOptions.style.display = 'none';
+        const proTimer = document.getElementById('proPrep');
+        const proStartButton = proTimer.nextElementSibling;
+        const proResetButton = proStartButton.nextElementSibling;
+        proStartButton.style.display = 'inline-block';
+        proResetButton.style.display = 'inline-block';
+    }
+    
+    // Close CON prep options if clicking outside
+    if (!conOptions.contains(event.target) && !conHeader.contains(event.target)) {
+        conOptions.style.display = 'none';
+        const conTimer = document.getElementById('conPrep');
+        const conStartButton = conTimer.nextElementSibling;
+        const conResetButton = conStartButton.nextElementSibling;
+        conStartButton.style.display = 'inline-block';
+        conResetButton.style.display = 'inline-block';
+    }
+});
 
         document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') {
-                document.getElementById('proPrepOptions').style.display = 'none';
-                document.getElementById('conPrepOptions').style.display = 'none';
-            }
-        });
+    if (event.key === 'Escape') {
+        const proOptions = document.getElementById('proPrepOptions');
+        const conOptions = document.getElementById('conPrepOptions');
+        const proTimer = document.getElementById('proPrep');
+        const conTimer = document.getElementById('conPrep');
+        const proStartButton = proTimer.nextElementSibling;
+        const proResetButton = proStartButton.nextElementSibling;
+        const conStartButton = conTimer.nextElementSibling;
+        const conResetButton = conStartButton.nextElementSibling;
+        
+        // Close both prep options and restore buttons
+        proOptions.style.display = 'none';
+        conOptions.style.display = 'none';
+        proStartButton.style.display = 'inline-block';
+        proResetButton.style.display = 'inline-block';
+        conStartButton.style.display = 'inline-block';
+        conResetButton.style.display = 'inline-block';
+    }
+});
 
         createFlow();
         updateTimerOrder();
